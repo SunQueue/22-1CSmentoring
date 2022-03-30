@@ -12,11 +12,6 @@ visitArr = [[0]*N for _ in range(N)] # 0=not visited, 1=visited
 ans = []
 for i in range (N):
     dataArr.append(list(map(int, input().strip())))
-
-def promising(dArrValue, vArrValue):
-    if dArrValue != 0 and vArrValue != 1 : #dataValue not 0 and not visited one
-        return True
-    else : return False
     
 count = 0
 
@@ -32,27 +27,41 @@ def search():
 
 def dfs(i, j) :
     global count
-    if i >= 0 and j >= 0  and i < N and j < N:
-        if promising(dataArr[i][j], visitArr[i][j]) :
-            visitArr[i][j] = 1 #visited
+    if i-1 >= 0 and j >= 0  and i-1 < N and j < N: #U
+        if dataArr[i-1][j] != 0 and visitArr[i-1][j] != 1 : #if U promising
+            visitArr[i-1][j] = 1 #visited
             count+=1
-            chk(i, j)
-        else:
-            visitArr[i][j] = 1
-    else :
-        return None
+            dfs(i-1, j)
+        else :
+            visitArr[i-1][j] = 1
             
-def chk(x, y):
-    #try: 
-        dfs(x-1, y)# U
-        dfs(x+1, y)# D
-        dfs(x, y-1)# L
-        dfs(x, y+1)# R
-    #except :
-    #    print("ExceptionOccur")
+    if i+1 >= 0 and j >= 0  and i+1 < N and j < N: #D
+        if dataArr[i+1][j] != 0 and visitArr[i+1][j] != 1 : #if D promising
+            visitArr[i+1][j] = 1 #visited
+            count+=1
+            dfs(i+1, j)
+        else :
+            visitArr[i+1][j] = 1
+            
+    if i >= 0 and j-1 >= 0  and i < N and j-1 < N: #L
+        if dataArr[i][j-1] != 0 and visitArr[i][j-1] != 1 : #if L promising
+            visitArr[i][j-1] = 1 #visited
+            count+=1
+            dfs(i, j-1)
+        else :
+            visitArr[i][j-1] = 1
+            
+    if i >= 0 and j+1 >= 0  and i < N and j+1 < N: #R
+        if dataArr[i][j+1] != 0 and visitArr[i][j+1] != 1 : #if R promising
+            visitArr[i][j+1] = 1 #visited
+            count+=1
+            dfs(i, j+1)
+        else:
+            visitArr[i][j+1] = 1
     
 search()
 
 print(len(ans))
+ans.sort()
 for k in range(0,len(ans)):
     print(ans[k])
